@@ -28,6 +28,12 @@ function App() {
     },
   ]);
   const [filter, setFilter] = useState("all");
+  const [theme, setTheme] = useState("dark");
+
+  const handleThemeChange = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+    document.body.className = theme === "light" ? "dark-theme" : "light-theme";
+  };
 
   const completedTodos = todos.filter((todo) => !todo.completed);
 
@@ -84,6 +90,11 @@ function App() {
   return (
     <div className="app">
       <div className="container">
+        <div>
+          <span style={{ cursor: "pointer" }} onClick={handleThemeChange}>
+            Змінити тему {theme === "light" ? "🌒" : "☀"}
+          </span>
+        </div>
         <h1>📝 My Todo List</h1>
 
         <TodoForm onAddTodo={addTodo} />
@@ -96,6 +107,7 @@ function App() {
           todoItems={filteredTodos}
           onToggle={toggleTodo}
           onDelete={deleteTodo}
+          setTodos={setTodos}
         />
 
         {completedTodos && (

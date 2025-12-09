@@ -5,9 +5,15 @@ type TodoListProps = {
   todoItems: Array<TodoType>;
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
+  setTodos: (updater: (todos: Array<TodoType>) => Array<TodoType>) => void;
 };
 
-const TodoList = ({ todoItems, onToggle, onDelete }: TodoListProps) => {
+const TodoList = ({
+  todoItems,
+  onToggle,
+  onDelete,
+  setTodos,
+}: TodoListProps) => {
   if (!todoItems.length) {
     return <h5>Список завдань порожній.</h5>;
   }
@@ -21,6 +27,7 @@ const TodoList = ({ todoItems, onToggle, onDelete }: TodoListProps) => {
               todo={todoItem}
               onToggle={onToggle}
               onDelete={onDelete}
+              setTodos={setTodos}
             />
           );
         })}

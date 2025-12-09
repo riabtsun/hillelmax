@@ -7,6 +7,14 @@
     --completed-color: #999;
 }
 
+.dark-theme {
+    background-color: #242424;
+}
+
+.light-theme {
+    background-color: #a5a3a3;
+}
+
 #root {
     width: 100%;
 }
