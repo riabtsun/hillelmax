@@ -1,5 +1,5 @@
 import TodoItem from "./TodoItem.tsx";
-import type { TodoType } from "../App.tsx";
+import { type TodoType } from "../App.tsx";
 
 type TodoListProps = {
   todoItems: Array<TodoType>;
@@ -17,6 +17,7 @@ const TodoList = ({
   if (!todoItems.length) {
     return <h5>Список завдань порожній.</h5>;
   }
+
   return (
     <ul className="todo-list">
       <li>

@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { ThemeContext } from "./components/ThemeContext.ts";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import TodoFilters from "./components/TodoFilters";
 import TodoStats from "./components/TodoStats";
 import "./styles/App.css";
+import ThemeButton from "./components/ThemeButton.tsx";
 
 export type TodoType = {
   id: number;
@@ -29,11 +31,6 @@ function App() {
   ]);
   const [filter, setFilter] = useState("all");
   const [theme, setTheme] = useState("dark");
-
-  const handleThemeChange = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-    document.body.className = theme === "light" ? "dark-theme" : "light-theme";
-  };
 
   const completedTodos = todos.filter((todo) => !todo.completed);
 
@@ -85,38 +82,42 @@ function App() {
     }
   };
 
+  const handleThemeChange = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+    document.body.className = theme === "light" ? "dark-theme" : "light-theme";
+  };
   const filteredTodos = getFilteredTodos();
 
   return (
-    <div className="app">
-      <div className="container">
-        <div>
-          <span style={{ cursor: "pointer" }} onClick={handleThemeChange}>
-            Змінити тему {theme === "light" ? "🌒" : "☀"}
-          </span>
+    <ThemeContext.Provider value={{ theme, handleThemeChange }}>
+      <div className="app">
+        <div className="container">
+          <div>
+            <ThemeButton />
+          </div>
+          <h1>📝 My Todo List</h1>
+
+          <TodoForm onAddTodo={addTodo} />
+
+          <TodoFilters filter={filter} onChangeFilter={setFilter} />
+
+          <TodoStats todos={todos} />
+
+          <TodoList
+            todoItems={filteredTodos}
+            onToggle={toggleTodo}
+            onDelete={deleteTodo}
+            setTodos={setTodos}
+          />
+
+          {completedTodos && (
+            <button onClick={clearCompleted}>
+              ❌ Видалити виконанні завдання
+            </button>
+          )}
         </div>
-        <h1>📝 My Todo List</h1>
-
-        <TodoForm onAddTodo={addTodo} />
-
-        <TodoFilters filter={filter} onChangeFilter={setFilter} />
-
-        <TodoStats todos={todos} />
-
-        <TodoList
-          todoItems={filteredTodos}
-          onToggle={toggleTodo}
-          onDelete={deleteTodo}
-          setTodos={setTodos}
-        />
-
-        {completedTodos && (
-          <button onClick={clearCompleted}>
-            ❌ Видалити виконанні завдання
-          </button>
-        )}
       </div>
-    </div>
+    </ThemeContext.Provider>
   );
 }
 
