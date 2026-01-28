@@ -4,10 +4,12 @@ type TodoStatsProps = {
   todos: Array<TodoType>;
 };
 
-const TodoStats = ({ todos }: TodoStatsProps) => {
-  const activeTodos = todos.filter((todo) => !todo.completed).length;
-  const completedTodos = todos.filter((todo) => todo.completed).length;
-  const totalTodos = todos.length;
+const TodoStats = ({ todos: state }: TodoStatsProps) => {
+  const activeTodos = state.filter((todo: TodoType) => !todo.completed).length;
+  const completedTodos = state.filter(
+    (todo: TodoType) => todo.completed,
+  ).length;
+  const totalTodos = state.length;
   return (
     <div>
       Загальна статистика:

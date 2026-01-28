@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import type { TodoType } from "../App.tsx";
 import type { KeyboardEvent, ChangeEvent } from "react";
+import { ThemeContext } from "./ThemeContext.ts";
 
 export type TodoItemProps = {
   todo: TodoType;
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
-  setTodos: (updater: (todos: Array<TodoType>) => Array<TodoType>) => void;
 };
 
-function TodoItem({ todo, onToggle, onDelete, setTodos }: TodoItemProps) {
+function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const themeContext = useContext(ThemeContext);
   const handleToggle = () => {
     onToggle(todo.id);
   };
@@ -31,11 +32,7 @@ function TodoItem({ todo, onToggle, onDelete, setTodos }: TodoItemProps) {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const updatedTodo = { ...todo, text: e.target.value };
-
-    setTodos((prevTodos: TodoType[]) =>
-      prevTodos.map((t: TodoType) => (t.id === todo.id ? updatedTodo : t)),
-    );
+    themeContext.editTodo(todo.id, e.target.value);
   };
 
   const handleBlur = () => {
