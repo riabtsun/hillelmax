@@ -1,5 +1,4 @@
-import { type ChangeEvent, useReducer, useState } from "react";
-import { ThemeContext } from "./components/ThemeContext.ts";
+import { useReducer, useState } from "react";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import TodoFilters from "./components/TodoFilters";
@@ -18,7 +17,7 @@ export type TodoType = {
 function App() {
   const [state, dispatch] = useReducer(tasksReducer, initialState);
   const [filter, setFilter] = useState("all");
-  const [theme, setTheme] = useState("dark");
+
   const completedTodos = state.filter((todo) => !todo.completed);
 
   // Додавання нового завдання
@@ -63,41 +62,36 @@ function App() {
     }
   };
 
-  const handleThemeChange = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-    document.body.className = theme === "light" ? "dark-theme" : "light-theme";
-  };
   const filteredTodos = getFilteredTodos();
 
   return (
-    <ThemeContext.Provider value={{ theme, handleThemeChange, editTodo }}>
-      <div className="app">
-        <div className="container">
-          <div>
-            <ThemeButton />
-          </div>
-          <h1>📝 My Todo List</h1>
-
-          <TodoForm onAddTodo={addTodo} />
-
-          <TodoFilters filter={filter} onChangeFilter={setFilter} />
-
-          <TodoStats todos={state} />
-
-          <TodoList
-            todoItems={filteredTodos}
-            onToggle={toggleTodo}
-            onDelete={deleteTodo}
-          />
-
-          {completedTodos && (
-            <button onClick={clearCompleted}>
-              ❌ Видалити виконанні завдання
-            </button>
-          )}
+    <div className="app">
+      <div className="container">
+        <div>
+          <ThemeButton />
         </div>
+        <h1>📝 My Todo List</h1>
+
+        <TodoForm onAddTodo={addTodo} />
+
+        <TodoFilters filter={filter} onChangeFilter={setFilter} />
+
+        <TodoStats todos={state} />
+
+        <TodoList
+          todoItems={filteredTodos}
+          onToggle={toggleTodo}
+          onDelete={deleteTodo}
+          onEdit={editTodo}
+        />
+
+        {completedTodos && (
+          <button onClick={clearCompleted}>
+            ❌ Видалити виконанні завдання
+          </button>
+        )}
       </div>
-    </ThemeContext.Provider>
+    </div>
   );
 }
 

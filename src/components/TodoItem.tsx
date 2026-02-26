@@ -1,18 +1,17 @@
-import { useContext, useState } from "react";
+import { useState, memo } from "react";
 import type { TodoType } from "../App.tsx";
 import type { KeyboardEvent, ChangeEvent } from "react";
-import { ThemeContext } from "./ThemeContext.ts";
 
 export type TodoItemProps = {
   todo: TodoType;
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
+  onEdit: (id: number, text: string) => void;
 };
 
-function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
+function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
-  const themeContext = useContext(ThemeContext);
   const handleToggle = () => {
     onToggle(todo.id);
   };
@@ -32,7 +31,7 @@ function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    themeContext.editTodo(todo.id, e.target.value);
+    onEdit(todo.id, e.target.value);
   };
 
   const handleBlur = () => {
@@ -78,4 +77,4 @@ function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   );
 }
 
-export default TodoItem;
+export default memo(TodoItem);

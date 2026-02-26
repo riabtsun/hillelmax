@@ -1,8 +1,12 @@
 import { useContext } from "react";
-import { ThemeContext } from "./ThemeContext.ts";
+import { ThemeContext } from "../context/ThemeContext.tsx";
 
 const ThemeButton = () => {
   const themeContext = useContext(ThemeContext);
+
+  if (!themeContext) {
+    return null;
+  }
 
   return (
     <button onClick={themeContext.handleThemeChange}>
